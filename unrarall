@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# source: https://askubuntu.com/questions/7059/script-app-to-unrar-files-and-only-delete-the-archives-which-were-sucessfully
+
+# First check if there is an "unrar" running already, if so, exit.
+
+if ps -ef | grep -v grep | grep -v unrarall | grep unrar ; then
+        exit 0
+else
+
+# This line probably unnecessary
+PATH=$PATH:/usr/bin/
+
+# The RARs I download are always multi-part, so I have to find the
+#   first file in the archive and extract only that. This is done
+#   using the "find" command. -exec means "run this command on the
+#   file" and the filename is substituted wherever {} is 
+
+find /rared/ -path /home/test -name "*part01.rar" -exec unrar -y -o- x \{\} /unrared/ \;
+find /rared/ -path /home/test -name "*part001.rar" -exec unrar -y -o- x \{\} /unrared/ \;
+find /rared/ -path /home/test -name "*part1.rar" -exec unrar -y -o- x \{\} /unrared/ \;
+find /rared/ -path /home/test -name "*.rar" -exec unrar -y -o- x \{\} /unrared \; 
+
+# If you only want .rar files, comment out the above 3 lines and
+#   uncomment the one below
+# find /rared/ -name "*.rar" -exec unrar -y -o- x \{\} /unrared/ \;
+
+fi
